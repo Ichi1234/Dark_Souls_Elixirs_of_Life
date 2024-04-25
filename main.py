@@ -1,7 +1,13 @@
 # 31 vertices , 66 edges
-original_adj = {0: [(1, 10), (2, 2), (3, 7)], 1: [], 2: [(3, 2), (4, 5)], 3: [(0, 2), (4, 1)], 4: [(0, 4), (1, 4), (2, 6)]}
 
-adj = {0: [(1, 10), (2, 2), (3, 7)], 1: [], 2: [(3, 2), (4, 5)], 3: [(4, 1)], 4: [(0, 4), (1, 4)]}
+# this example come from elab
+original_adj = {0: [(1, 10), (2, 2), (3, 7)], 1: [], 2: [(3, 2), (4, 5)],
+                3: [(0, 2), (4, 1)], 4: [(0, 4), (1, 4), (2, 6)]}
+
+# this example similar to my real data
+adj = {0: [(1, 10), (2, 2), (3, 7), (4, 4)], 1: [(0, 10), (4, 4)], 2: [(0, 2), (3, 2), (4, 5)],
+       3: [(0, 7), (2, 2), (4, 1)], 4: [(0, 4), (1, 4), (2, 5), (3, 1)]}
+
 item_container = [2, 0, 2, 3, 1, 2]
 dist = []
 bag = []
@@ -16,7 +22,7 @@ def show_adj():
             print(f"({neighbor}, {weight})", end=" ")
         print()
 
-
+show_adj()
 def decrease_key(vertex_id, new_distance):
     """Use for update new distance for bag"""
     for i, (vertex_in_bag, dist_v) in enumerate(bag):
@@ -53,6 +59,6 @@ def item_finder_dijkstra(first_vertex):
                 decrease_key(v, dist[v])
 
 
-item_finder_dijkstra(0)
+item_finder_dijkstra(2)
 print(dist)
 print(parent)
