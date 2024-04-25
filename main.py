@@ -9,6 +9,7 @@ adj = {0: [(1, 10), (2, 2), (3, 7), (4, 4)], 1: [(0, 10), (4, 4)], 2: [(0, 2), (
        3: [(0, 7), (2, 2), (4, 1)], 4: [(0, 4), (1, 4), (2, 5), (3, 1)]}
 
 items_container = [2, 0, 2, 3, 1, 2]
+amount_container = []
 dist = []
 bag = []
 parent = []
@@ -35,13 +36,27 @@ def decrease_key(vertex_id, new_distance):
     bag.sort(key=lambda x: x[1])  # sort bag base on distance
 
 
-def item_finder_dijkstra(first_vertex):
-    """this code is base on dijikstra algorithm. However, this dijikstra determine on a
-    weight and numbers of items that are in the vertice"""
+def item_counter(desired_num):
+    """This function is use to find which paths is the best path to find num_items"""
+
+    for i, value in enumerate(shortest_path.values()):
+        if sum(amount_container[i]) >= desired_num:
+            continue
+
+        elif value:
+            for amount in value:
+                amount_container[i].append(amount[1])
+
+
+
+def item_finder_dijkstra(first_vertex, find_num_items):
+    """This code is base on dijikstra algorithm. However, this algorithm aims to find which paths
+    is the shortest path and best path to find num_items that are in each vertex"""
 
     for _ in range(len(adj)):
         dist.append(9999999)  # set initial value
         parent.append(-1)
+        amount_container.append([])
 
     dist[first_vertex] = 0  # set first vertex
 
@@ -66,9 +81,10 @@ def item_finder_dijkstra(first_vertex):
     for vertex, value in shortest_path.items():
         if value:
             value.append((vertex, items_container[vertex]))
+    item_counter(find_num_items)
 
-
-item_finder_dijkstra(0)
+item_finder_dijkstra(0, 8)
 print(dist)
 print(parent)
 print(shortest_path)
+print(amount_container)
