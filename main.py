@@ -1,6 +1,6 @@
 # 31 vertices , 66 edges
 
-# this example come from elab
+# this example come from elab (start vertex = 1)
 original_adj = {0: [(1, 10), (2, 2), (3, 7)], 1: [], 2: [(3, 2), (4, 5)],
                 3: [(0, 2), (4, 1)], 4: [(0, 4), (1, 4), (2, 6)]}
 
@@ -16,13 +16,14 @@ parent = []
 
 # Printing the adjacency list
 def show_adj():
+    """this function use to show relationship between each vertex"""
     for node, neighbors in adj.items():
         print(f"adj[{node}]:", end=" ")
         for neighbor, weight in neighbors:
             print(f"({neighbor}, {weight})", end=" ")
         print()
 
-show_adj()
+
 def decrease_key(vertex_id, new_distance):
     """Use for update new distance for bag"""
     for i, (vertex_in_bag, dist_v) in enumerate(bag):
@@ -37,7 +38,7 @@ def item_finder_dijkstra(first_vertex):
     weight and numbers of items that are in the vertice"""
 
     for _ in range(len(adj)):
-        dist.append(9999999) # set initial value
+        dist.append(9999999)  # set initial value
         parent.append(-1)
 
     dist[first_vertex] = 0  # set first vertex
@@ -59,6 +60,6 @@ def item_finder_dijkstra(first_vertex):
                 decrease_key(v, dist[v])
 
 
-item_finder_dijkstra(2)
+item_finder_dijkstra(0)
 print(dist)
 print(parent)
