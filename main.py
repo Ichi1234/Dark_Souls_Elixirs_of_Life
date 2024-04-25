@@ -8,10 +8,12 @@ original_adj = {0: [(1, 10), (2, 2), (3, 7)], 1: [], 2: [(3, 2), (4, 5)],
 adj = {0: [(1, 10), (2, 2), (3, 7), (4, 4)], 1: [(0, 10), (4, 4)], 2: [(0, 2), (3, 2), (4, 5)],
        3: [(0, 7), (2, 2), (4, 1)], 4: [(0, 4), (1, 4), (2, 5), (3, 1)]}
 
-item_container = [2, 0, 2, 3, 1, 2]
+items_container = [2, 0, 2, 3, 1, 2]
 dist = []
 bag = []
 parent = []
+shortest_path = {0: [], 1: [], 2: [],
+                 3: [], 4: []}
 
 
 # Printing the adjacency list
@@ -58,8 +60,15 @@ def item_finder_dijkstra(first_vertex):
                 dist[v] = dist[u] + weight
                 parent[v] = u
                 decrease_key(v, dist[v])
+                shortest_path[v].append(u)
+
+    # add end vertex to shortest_path variable
+    for vertex, value in shortest_path.items():
+        if value:
+            value.append(vertex)
 
 
 item_finder_dijkstra(0)
 print(dist)
 print(parent)
+print(shortest_path)
