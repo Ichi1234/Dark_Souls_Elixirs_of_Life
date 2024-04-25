@@ -18,21 +18,28 @@ def show_adj():
 
 
 def decrease_key(vertex_id, new_distance):
-    pass
+    """Use for update new distance for bag"""
+    for i, (vertex_in_bag, dist_v) in enumerate(bag):
+        if vertex_in_bag == vertex_id:
+            bag[i] = (vertex_id, new_distance)
+            break
+    bag.sort(key=lambda x: x[1])  # sort bag base on distance
 
 
-def item_finder_dijkstra():
+def item_finder_dijkstra(first_vertex):
     """this code is base on dijikstra algorithm. However, this dijikstra determine on a
     weight and numbers of items that are in the vertice"""
 
     for _ in range(len(adj)):
-        dist.append(9999999)
+        dist.append(9999999) # set initial value
         parent.append(-1)
 
-    dist[0] = 0
+    dist[first_vertex] = 0  # set first vertex
 
     for j in range(len(adj)):
         bag.append((j, dist[j]))
+
+    bag.sort(key=lambda x: x[1])  # put first_vertex that user choose to front of the list
 
     while bag:
         u = bag.pop(0)[0]
@@ -46,6 +53,6 @@ def item_finder_dijkstra():
                 decrease_key(v, dist[v])
 
 
-item_finder_dijkstra()
+item_finder_dijkstra(0)
 print(dist)
-
+print(parent)
