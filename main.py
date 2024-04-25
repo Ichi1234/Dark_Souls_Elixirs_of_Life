@@ -60,12 +60,12 @@ def item_finder_dijkstra(first_vertex):
                 dist[v] = dist[u] + weight
                 parent[v] = u
                 decrease_key(v, dist[v])
-                shortest_path[v].append(u)
+                shortest_path[v].append((u, items_container[u]))  # add connect vertex and amount of items
 
     # add end vertex to shortest_path variable
     for vertex, value in shortest_path.items():
         if value:
-            value.append(vertex)
+            value.append((vertex, items_container[vertex]))
 
 
 item_finder_dijkstra(0)
