@@ -9,7 +9,7 @@ adj = {0: [(1, 10), (2, 2), (3, 7), (4, 4)], 1: [(0, 10), (4, 4)], 2: [(0, 2), (
        3: [(0, 7), (2, 2), (4, 1)], 4: [(0, 4), (1, 4), (2, 5), (3, 1)]}
 
 items_container = [2, 0, 2, 3, 1, 2]
-amount_container = []
+current_amount_of_items = []
 dist = []
 bag = []
 parent = []
@@ -40,13 +40,12 @@ def item_counter(desired_num):
     """This function is use to find which paths is the best path to find num_items"""
 
     for i, value in enumerate(shortest_path.values()):
-        if sum(amount_container[i]) >= desired_num:
+        if sum(current_amount_of_items[i]) >= desired_num:
             continue
 
         elif value:
             for amount in value:
-                amount_container[i].append(amount[1])
-
+                current_amount_of_items[i].append(amount[1])
 
 
 def item_finder_dijkstra(first_vertex, find_num_items):
@@ -56,7 +55,7 @@ def item_finder_dijkstra(first_vertex, find_num_items):
     for _ in range(len(adj)):
         dist.append(9999999)  # set initial value
         parent.append(-1)
-        amount_container.append([])
+        current_amount_of_items.append([])
 
     dist[first_vertex] = 0  # set first vertex
 
@@ -71,7 +70,7 @@ def item_finder_dijkstra(first_vertex, find_num_items):
             v = num_pair[0]
             weight = num_pair[1]
 
-            if dist[u] + weight < dist[v]:
+            if items_container[u]/(dist[u] + weight) > items_container[v]/(dist[v] + 1e-9) or dist[u] + weight < dist[v]:
                 dist[v] = dist[u] + weight
                 parent[v] = u
                 decrease_key(v, dist[v])
@@ -83,8 +82,9 @@ def item_finder_dijkstra(first_vertex, find_num_items):
             value.append((vertex, items_container[vertex]))
     item_counter(find_num_items)
 
+
 item_finder_dijkstra(0, 8)
 print(dist)
 print(parent)
 print(shortest_path)
-print(amount_container)
+print(current_amount_of_items)
