@@ -12,7 +12,7 @@ items_container = [2, 0, 2, 3, 1, 2]
 current_amount_of_items = []
 dist = []
 bag = []
-parent = []
+mark = []
 shortest_path = {0: [], 1: [], 2: [],
                  3: [], 4: []}
 
@@ -42,7 +42,7 @@ def item_finder_dijkstra(first_vertex, find_num_items):
 
     for _ in range(len(adj)):
         dist.append(9999999)  # set initial value
-        parent.append(-1)
+        mark.append(-1)
         current_amount_of_items.append([])
 
     dist[first_vertex] = 0  # set first vertex
@@ -61,18 +61,16 @@ def item_finder_dijkstra(first_vertex, find_num_items):
             # choose path that higher item or path that shorter
             if items_container[u] / (dist[u] + weight) > items_container[v] / (dist[v] + 1e-9) or \
                     dist[u] + weight < dist[v]:
-
                 dist[v] = dist[u] + weight
-                parent[v] = u
                 decrease_key(v, dist[v])
                 shortest_path[v].append(u)  # add connect vertex and amount of items
                 current_amount_of_items[v].append(items_container[u])
 
     # add end vertex to shortest_path variable
-    for vertex, value in shortest_path.items():
+    for index, value in shortest_path.items():
         if value:
-            value.append(vertex)
-            current_amount_of_items[vertex].append(items_container[vertex])
+            value.append(index)
+            current_amount_of_items[index].append(items_container[index])
 
     # find which path is shortest
     result_path = [(i, items) for i, items in enumerate(current_amount_of_items) if
@@ -80,15 +78,27 @@ def item_finder_dijkstra(first_vertex, find_num_items):
 
     # if the path >= num_items return it else back tracking to find more item
     if result_path:
-        return min(result_path, key=lambda x: len(x[1]))  # Return the path with the minimum length
+        return min(result_path, key=lambda x: len(x[1])), True  # Return the path with the minimum length
     else:
         # back tracking
-        result_path = max(enumerate(current_amount_of_items),
-                          key=lambda x: sum(x[1]))  # The path with the maximum item sum
+        return max(enumerate(current_amount_of_items),
+                   key=lambda x: sum(x[1])), False  # The path with the maximum item sum
 
 
-print(item_finder_dijkstra(0, 8))
-print(dist)
-print(parent)
+def backtracking(result_from_dijkstra, current_sum):
+    """This function use when the result of dijkstra not achieves user desired_number"""
+    target_path = shortest_path[result_from_dijkstra]
+    for i in target_path:
+        items_container[i] = 0
+        mark[i] = 1
+
+
+
+vertex, achieve = item_finder_dijkstra(0, 10)
+
+if not achieve:
+    backtracking(vertex[0], sum(vertex[1]))
+
+
 print(shortest_path)
-print(current_amount_of_items)
+print(shortest_path[vertex[0]])
