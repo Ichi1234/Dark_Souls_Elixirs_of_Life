@@ -9,6 +9,7 @@ adj = {0: [(1, 10), (2, 2), (3, 7), (4, 4)], 1: [(0, 10), (4, 4)], 2: [(0, 2), (
        3: [(0, 7), (2, 2), (4, 1)], 4: [(0, 4), (1, 4), (2, 5), (3, 1)]}
 
 items_container = [2, 0, 2, 3, 1]
+output_items = [2, 0, 2, 3, 1]
 current_amount_of_items = []
 dist = []
 bag = []
@@ -55,6 +56,13 @@ def item_finder_dijkstra(first_vertex, find_num_items, best_path=None):
 
     bag.sort(key=lambda x: x[1])  # put first_vertex that user choose to front of the list
 
+    if items_container[first_vertex] >= find_num_items:
+        try:
+            return best_path + shortest_path[first_vertex][1:]
+
+        except TypeError:
+            return [first_vertex]
+
     while bag:
         u = bag.pop(0)[0]
         for num_pair in adj[u]:
@@ -74,27 +82,26 @@ def item_finder_dijkstra(first_vertex, find_num_items, best_path=None):
         if value:
             value.append(index)
             current_amount_of_items[index].append(items_container[index])
-    print(shortest_path)
+
     # find which path is shortest
     result_path = [(i, items) for i, items in enumerate(current_amount_of_items) if
                    items and sum(items) >= find_num_items]
-    print(result_path)
-    print(f"this is items {current_amount_of_items}")
+
     # if the path >= num_items return it else back tracking to find more item
     if result_path:
         result = min(result_path, key=lambda x: len(x[1]))  # Return the path with the minimum length
-        print(f"result from true {result}")
-        print()
-        print(best_path + shortest_path[result[0]])
-        return best_path + shortest_path[result[0]]
+        try:
+            return best_path + shortest_path[result[0]][1:]
+
+        except TypeError:
+            return shortest_path[result[0]]
 
     else:
         # back tracking
         recursive_path = max(enumerate(current_amount_of_items),
                              key=lambda x: sum(x[1]))  # The path with the maximum item sum
         target_path = shortest_path[recursive_path[0]]
-        print(f"result from false {target_path}")
-        print()
+
         for i in target_path:
             items_container[i] = 0
 
@@ -102,15 +109,17 @@ def item_finder_dijkstra(first_vertex, find_num_items, best_path=None):
                                     shortest_path[recursive_path[0]])
 
 
-def backtracking(result_from_dijkstra, current_sum):
-    """This function use when the result of dijkstra not achieves user desired_number"""
+start = int(input("What is the start vertex (int)? "))
+user_desired = int(input("How many do you want to find? "))
+vertex = item_finder_dijkstra(start, user_desired)
 
-    vertex, achieve = item_finder_dijkstra(result_from_dijkstra, current_sum)
-    print()
-    print(items_container)
-    print(vertex, achieve)
+print()
+print(f"Shortest path to find {user_desired} items is ")
 
+output = " -> ".join(list(map(str, vertex)))
+if "->" in output:
+    print(output)
+else:
+    print(f"{start} -> {start} (Items is in your area)")
 
-vertex = item_finder_dijkstra(4, 8)
-
-print(vertex)
+print(f"Total items: {sum([output_items[i] for i in vertex])}")
