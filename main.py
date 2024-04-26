@@ -70,20 +70,29 @@ def item_finder_dijkstra(first_vertex, find_num_items):
             v = num_pair[0]
             weight = num_pair[1]
 
-            if items_container[u]/(dist[u] + weight) > items_container[v]/(dist[v] + 1e-9) or dist[u] + weight < dist[v]:
+            if items_container[u] / (dist[u] + weight) > items_container[v] / (dist[v] + 1e-9) or dist[u] + weight < \
+                    dist[v]:
                 dist[v] = dist[u] + weight
                 parent[v] = u
                 decrease_key(v, dist[v])
-                shortest_path[v].append((u, items_container[u]))  # add connect vertex and amount of items
-
+                shortest_path[v].append(u)  # add connect vertex and amount of items
+                current_amount_of_items[v].append(items_container[u])
     # add end vertex to shortest_path variable
     for vertex, value in shortest_path.items():
         if value:
-            value.append((vertex, items_container[vertex]))
-    item_counter(find_num_items)
+            value.append(vertex)
+            current_amount_of_items[vertex].append(items_container[vertex])
+    # item_counter(find_num_items)
+    result_path = []
+    for i in range(len(current_amount_of_items)):
+        if current_amount_of_items[i] != 0 and sum(current_amount_of_items[i]) >= find_num_items:
+            result_path.append((i, current_amount_of_items[i]))
 
+    if result_path:
+        result_path.sort(key=lambda x: len(x[1]))
+        return result_path[0]
 
-item_finder_dijkstra(0, 8)
+print(item_finder_dijkstra(0, 8))
 print(dist)
 print(parent)
 print(shortest_path)
