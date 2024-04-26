@@ -108,15 +108,20 @@ def item_finder_dijkstra(first_vertex, find_num_items, best_path=None):
 
 start = int(input("What is the start vertex (int)? "))
 user_desired = int(input("How many do you want to find? "))
-vertex = item_finder_dijkstra(start, user_desired)
 
-print()
-print(f"Shortest path to find {user_desired} items is ")
+if user_desired > sum(items_container) or start > len(adj):
+    print("Invalid item or vertex!")
 
-output = " -> ".join(list(map(str, vertex)))
-if "->" in output:
-    print(output)
 else:
-    print(f"{start} -> {start} (Items is in your area)")
+    vertex = item_finder_dijkstra(start, user_desired)
 
-print(f"Total items: {sum([output_items[i] for i in vertex])}")
+    print()
+    print(f"Shortest path to find {user_desired} items is ")
+
+    output = " -> ".join(list(map(str, vertex)))
+    if "->" in output:
+        print(output)
+    else:
+        print(f"{start} -> {start} (Items is in your area)")
+
+    print(f"Total items: {sum([output_items[i] for i in vertex])}")
