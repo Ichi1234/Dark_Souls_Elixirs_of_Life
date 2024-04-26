@@ -36,18 +36,6 @@ def decrease_key(vertex_id, new_distance):
     bag.sort(key=lambda x: x[1])  # sort bag base on distance
 
 
-def item_counter(desired_num):
-    """This function is use to find which paths is the best path to find num_items"""
-
-    for i, value in enumerate(shortest_path.values()):
-        if sum(current_amount_of_items[i]) >= desired_num:
-            continue
-
-        elif value:
-            for amount in value:
-                current_amount_of_items[i].append(amount[1])
-
-
 def item_finder_dijkstra(first_vertex, find_num_items):
     """This code is base on dijikstra algorithm. However, this algorithm aims to find which paths
     is the shortest path and best path to find num_items that are in each vertex"""
@@ -82,12 +70,14 @@ def item_finder_dijkstra(first_vertex, find_num_items):
         if value:
             value.append(vertex)
             current_amount_of_items[vertex].append(items_container[vertex])
-    # item_counter(find_num_items)
+
+    # find which path is shortest
     result_path = []
     for i in range(len(current_amount_of_items)):
         if current_amount_of_items[i] != 0 and sum(current_amount_of_items[i]) >= find_num_items:
             result_path.append((i, current_amount_of_items[i]))
 
+    # if there is a path that >= num_items it will return shortest path else backtracking
     if result_path:
         result_path.sort(key=lambda x: len(x[1]))
         return result_path[0]
