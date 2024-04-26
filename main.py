@@ -1,8 +1,5 @@
-# 31 vertices , 66 edges
+# 31 vertices , 66 edges in real data
 
-# this example come from elab (start vertex = 1)
-original_adj = {0: [(1, 10), (2, 2), (3, 7)], 1: [], 2: [(3, 2), (4, 5)],
-                3: [(0, 2), (4, 1)], 4: [(0, 4), (1, 4), (2, 6)]}
 
 # this example similar to my real data
 adj = {0: [(1, 10), (2, 2), (3, 7), (4, 4)], 1: [(0, 10), (4, 4)], 2: [(0, 2), (3, 2), (4, 5)],
