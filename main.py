@@ -12,7 +12,6 @@ items_container = [2, 0, 2, 3, 1]
 current_amount_of_items = []
 dist = []
 bag = []
-mark = []
 shortest_path = {0: [], 1: [], 2: [],
                  3: [], 4: []}
 
@@ -47,7 +46,6 @@ def item_finder_dijkstra(first_vertex, find_num_items, best_path=None):
 
     for _ in range(len(adj)):
         dist.append(9999999)  # set initial value
-        mark.append(-1)
         current_amount_of_items.append([])
 
     dist[first_vertex] = 0  # set first vertex
@@ -99,7 +97,6 @@ def item_finder_dijkstra(first_vertex, find_num_items, best_path=None):
         print()
         for i in target_path:
             items_container[i] = 0
-            mark[i] = 1
 
         return item_finder_dijkstra(recursive_path[0], find_num_items - sum(recursive_path[1]),
                                     shortest_path[recursive_path[0]])
